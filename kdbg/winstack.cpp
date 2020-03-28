@@ -166,7 +166,7 @@ bool WinStack::activeLine(QString& fileName, int& lineNo, DbgAddr& address)
     if (activeWindow() == 0) {
 	return false;
     }
-    
+
     fileName = activeFileName();
     activeWindow()->activeLine(lineNo, address);
     return true;
@@ -207,7 +207,7 @@ void WinStack::setPC(bool set, const QString& fileName, int lineNo,
 		     const DbgAddr& address, int frameNo)
 {
     TRACE((set ? "set PC: " : "clear PC: ") + fileName +
-	  QString().sprintf(":%d#%d ", lineNo, frameNo) + address.asString());
+	  QString().asprintf(":%d#%d ", lineNo, frameNo) + address.asString());
     SourceWindow* fw = findByFileName(fileName);
     if (fw)
 	fw->setPC(set, lineNo, address, frameNo);

@@ -762,7 +762,7 @@ void KDebugger::saveProgramSettings()
     gg.writeEntry(FileVersion, 1);
     gg.writeEntry(ProgramArgs, m_programArgs);
     gg.writeEntry(WorkingDirectory, m_programWD);
-    gg.writeEntry(OptionsSelected, m_boolOptions.toList());
+    gg.writeEntry(OptionsSelected, m_boolOptions.values());
     gg.writeEntry(DebuggerCmdStr, m_debuggerCmd);
     gg.writeEntry(TTYLevelEntry, int(m_ttyLevel));
     QString driverName;
@@ -820,7 +820,8 @@ void KDebugger::restoreProgramSettings()
     // m_ttyLevel has been read in already
     QString pgmArgs = gg.readEntry(ProgramArgs);
     QString pgmWd = gg.readEntry(WorkingDirectory);
-    QSet<QString> boolOptions = QSet<QString>::fromList(gg.readEntry(OptionsSelected, QStringList()));
+    QList<QString> const &  readEntry = gg.readEntry(OptionsSelected, QStringList());
+    QSet<QString> boolOptions (readEntry.begin(), readEntry.end());
     m_boolOptions.clear();
 
     // read environment variables

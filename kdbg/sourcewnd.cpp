@@ -36,13 +36,13 @@ SourceWindow::SourceWindow(const QString& fileName, QWidget* parent) :
     setCenterOnScroll(true);
 
     // load pixmaps
-    m_pcinner = UserIcon("pcinner");
-    m_pcup = UserIcon("pcup");
-    m_brkena = UserIcon("brkena");
-    m_brkdis = UserIcon("brkdis");
-    m_brktmp = UserIcon("brktmp");
-    m_brkcond = UserIcon("brkcond");
-    m_brkorph = UserIcon("brkorph");
+    m_pcinner = KIconLoader::global()-> loadIcon("pcinner", KIconLoader::User);
+    m_pcup = KIconLoader::global()-> loadIcon("pcup", KIconLoader::User);
+    m_brkena = KIconLoader::global()-> loadIcon("brkena", KIconLoader::User);
+    m_brkdis = KIconLoader::global()-> loadIcon("brkdis", KIconLoader::User);
+    m_brktmp = KIconLoader::global()-> loadIcon("brktmp", KIconLoader::User);
+    m_brkcond = KIconLoader::global()-> loadIcon("brkcond", KIconLoader::User);
+    m_brkorph = KIconLoader::global()-> loadIcon("brkorph", KIconLoader::User);
     setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     setReadOnly(true);
     setViewportMargins(lineInfoAreaWidth(), 0, 0 ,0);
@@ -247,7 +247,7 @@ void SourceWindow::updateLineItems(const KDebugger* dbg)
 	if (m_lineItems[i] & liBPany) {
 	    // check if this breakpoint still exists
 	    int line = rowToLine(i);
-	    TRACE(QString().sprintf("checking for bp at %d", line));
+	    TRACE(QString().asprintf("checking for bp at %d", line));
 	    KDebugger::BrkptROIterator bp = dbg->breakpointsBegin();
 	    for (; bp != dbg->breakpointsEnd(); ++bp)
 	    {
@@ -372,12 +372,12 @@ void SourceWindow::infoMousePress(QMouseEvent* ev)
 
     switch (ev->button()) {
     case Qt::LeftButton:
-	TRACE(QString().sprintf("left-clicked line %d", line));
+	TRACE(QString().asprintf("left-clicked line %d", line));
 	emit clickedLeft(m_fileName, line, address,
  			 (ev->modifiers() & Qt::ShiftModifier) != 0);
 	break;
     case Qt::MidButton:
-	TRACE(QString().sprintf("mid-clicked row %d", line));
+	TRACE(QString().asprintf("mid-clicked row %d", line));
 	emit clickedMid(m_fileName, line, address);
 	break;
     default:;
@@ -773,8 +773,8 @@ void SourceWindow::setTabWidth(int numChars)
 	numChars = 8;
     QFontMetrics fm(document()->defaultFont());
     QString s;
-    int w = fm.width(s.fill('x', numChars));
-    setTabStopWidth(w);
+    int w = fm.horizontalAdvance(s.fill('x', numChars));
+    setTabStopDistance(w);
 }
 
 QColor SourceWindow::lineSelectionColor() const
