@@ -355,7 +355,7 @@ int GdbDriver::findPrompt(const QByteArray& output) const
     /*
      * If there's a prompt string in the collected output, it must be at
      * the very end.
-     * 
+     *
      * Note: It could nevertheless happen that a character sequence that is
      * equal to the prompt string appears at the end of the output,
      * although it is very, very unlikely (namely as part of a string that
@@ -450,7 +450,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, QString strArg)
     }
 
     QString cmdString;
-    cmdString.sprintf(cmds[cmd].fmt, strArg.toUtf8().constData());
+    cmdString.asprintf(cmds[cmd].fmt, strArg.toUtf8().constData());
     return cmdString;
 }
 
@@ -460,7 +460,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, int intArg)
     assert(cmds[cmd].argsNeeded == GdbCmdInfo::argNum);
 
     QString cmdString;
-    cmdString.sprintf(cmds[cmd].fmt, intArg);
+    cmdString.asprintf(cmds[cmd].fmt, intArg);
     return cmdString;
 }
 
@@ -490,7 +490,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, QString strArg, int intArg1, in
 	assert(formatSpec != '\0');
 
 	QString spec;
-	spec.sprintf("/%d%c%c", count, sizeSpec, formatSpec);
+	spec.asprintf("/%d%c%c", count, sizeSpec, formatSpec);
 	cmdString = makeCmdString(DCexamine, spec, strArg);
     }
 
@@ -515,7 +515,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, QString strArg, int intArg)
 	 * /dev/null. It is a value or'ed together from RDNstdin,
 	 * RDNstdout, RDNstderr. We store the value for a later DCsetargs
 	 * command.
-	 * 
+	 *
 	 * Note: We rely on that after the DCtty a DCsetargs will follow,
 	 * which will ultimately apply the redirection.
 	 */
@@ -549,11 +549,11 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, QString strArg, int intArg)
 	    // must split off file name part
 	    strArg = QFileInfo(strArg).fileName();
 	}
-	cmdString.sprintf(cmds[cmd].fmt, strArg.toUtf8().constData(), intArg);
+	cmdString.asprintf(cmds[cmd].fmt, strArg.toUtf8().constData(), intArg);
     }
     else
     {
-	cmdString.sprintf(cmds[cmd].fmt, intArg, strArg.toUtf8().constData());
+	cmdString.asprintf(cmds[cmd].fmt, intArg, strArg.toUtf8().constData());
     }
     return cmdString;
 }
@@ -567,7 +567,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, QString strArg1, QString strArg
     normalizeStringArg(strArg2);
 
     QString cmdString;
-    cmdString.sprintf(cmds[cmd].fmt,
+    cmdString.asprintf(cmds[cmd].fmt,
 		      strArg1.toUtf8().constData(),
 		      strArg2.toUtf8().constData());
     return cmdString;
@@ -579,7 +579,7 @@ QString GdbDriver::makeCmdString(DbgCommand cmd, int intArg1, int intArg2)
     assert(cmds[cmd].argsNeeded == GdbCmdInfo::argNum2);
 
     QString cmdString;
-    cmdString.sprintf(cmds[cmd].fmt, intArg1, intArg2);
+    cmdString.asprintf(cmds[cmd].fmt, intArg1, intArg2);
     return cmdString;
 }
 
@@ -894,7 +894,7 @@ static ExprValue* parseVar(const char*& s)
     }
 
     ExprValue* variable = new ExprValue(name, kind);
-    
+
     if (!parseValue(p, variable)) {
 	delete variable;
 	return 0;
@@ -923,7 +923,7 @@ static void skipNested(const char*& s, char opening, char closing)
 	p++;
     }
     if (nest != 0) {
-	TRACE(QString().sprintf("parse error: mismatching %c%c at %-20.20s", opening, closing, s));
+	TRACE(QString().asprintf("parse error: mismatching %c%c at %-20.20s", opening, closing, s));
     }
     s = p;
 }
@@ -966,7 +966,7 @@ static void skipNestedAngles(const char*& s)
 	p++;
     }
     if (nest != 0) {
-	TRACE(QString().sprintf("parse error: mismatching <> at %-20.20s", s));
+	TRACE(QString().asprintf("parse error: mismatching <> at %-20.20s", s));
     }
     s = p;
 }
@@ -990,7 +990,7 @@ static void findEnd(const char*& s)
 
 static bool isNumberish(const char ch)
 {
-    return (ch>='0' && ch<='9') || ch=='.' || ch=='x'; 
+    return (ch>='0' && ch<='9') || ch=='.' || ch=='x';
 }
 
 static bool isStringPrefix(char c)
@@ -1106,7 +1106,7 @@ static void skipNestedWithString(const char*& s, char opening, char closing)
 	p++;
     }
     if (nest > 0) {
-	TRACE(QString().sprintf("parse error: mismatching %c%c at %-20.20s", opening, closing, s));
+	TRACE(QString().asprintf("parse error: mismatching %c%c at %-20.20s", opening, closing, s));
     }
     s = p;
 }
@@ -1180,7 +1180,7 @@ static bool parseName(const char*& s, QString& name, VarTree::NameKind& kind)
 	// name, which might be "static"; allow dot for "_vtbl."
 	skipName(p);
 	if (p == s) {
-	    TRACE(QString().sprintf("parse error: not a name %-20.20s", s));
+	    TRACE(QString().asprintf("parse error: not a name %-20.20s", s));
 	    return false;
 	}
 	int len = p - s;
@@ -1192,7 +1192,7 @@ static bool parseName(const char*& s, QString& name, VarTree::NameKind& kind)
 	    s = p;
 	    skipName(p);
 	    if (p == s) {
-		TRACE(QString().sprintf("parse error: not a name after static %-20.20s", s));
+		TRACE(QString().asprintf("parse error: not a name after static %-20.20s", s));
 		return false;
 	    }
 	    len = p - s;
@@ -1274,7 +1274,7 @@ repeat:
 	//  (void (Templated<double>::*)(Templated<double> * const)) 0x400d74 <MostDerived::PrintV()>, this adjustment -16
 
 	const char*p = s;
-    
+
 	// check for type
 	QString type;
 	if (*p == '(') {
@@ -1551,7 +1551,7 @@ static bool parseValueSeq(const char*& s, ExprValue* variable)
     bool good;
     for (;;) {
 	QString name;
-	name.sprintf("[%d]", index);
+	name.asprintf("[%d]", index);
 	ExprValue* var = new ExprValue(name, VarTree::NKplain);
 	good = parseValue(s, var);
 	if (!good) {
@@ -1568,9 +1568,9 @@ static bool parseValueSeq(const char*& s, ExprValue* variable)
 		delete var;
 		return false;
 	    }
-	    TRACE(QString().sprintf("found <repeats %d times> in array", l));
+	    TRACE(QString().asprintf("found <repeats %d times> in array", l));
 	    // replace name and advance index
-	    name.sprintf("[%d .. %d]", index, index+l-1);
+	    name.asprintf("[%d .. %d]", index, index+l-1);
 	    var->m_name = name;
 	    index += l;
 	    // skip " times>" and space
@@ -2465,11 +2465,11 @@ std::list<RegisterInfo> GdbDriver::parseRegisters(const char* output)
 		// find first type that does not have an array, this is the RAW value
 		const char* end=start;
 		findEnd(end);
-		const char* cur=start; 
+		const char* cur=start;
 		while (cur<end) {
 		    while (*cur != '=' && cur<end)
 			cur++;
-		    cur++; 
+		    cur++;
 		    while (isspace(*cur) && cur<end)
 			cur++;
 		    if (isNumberish(*cur)) {
@@ -2491,7 +2491,7 @@ std::list<RegisterInfo> GdbDriver::parseRegisters(const char* output)
 			    reg.type = QString::fromLatin1(cur, end-cur);
 			}
 
-			// end while loop 
+			// end while loop
 			cur=end;
 		    }
 		}
@@ -2718,7 +2718,7 @@ QString GdbDriver::parseMemoryDump(const char* output, std::list<MemoryDump>& me
 
     if (end_region && !memdump.empty())
 	memdump.back().endOfDump = true;
-    
+
     return QString();
 }
 

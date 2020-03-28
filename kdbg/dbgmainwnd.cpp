@@ -936,7 +936,7 @@ QString DebuggerMainWnd::createOutputWindow()
 {
     // create a name for a fifo
     QString fifoName;
-    fifoName.sprintf("/tmp/kdbgttywin%05d", ::getpid());
+    fifoName.asprintf("/tmp/kdbgttywin%05d", ::getpid());
 
     // create a fifo that will pass in the tty name
     QFile::remove(fifoName);		// remove remnants

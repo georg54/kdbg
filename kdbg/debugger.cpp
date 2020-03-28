@@ -491,7 +491,7 @@ bool KDebugger::enableDisableBreakpoint(BrkptIterator bp)
 
     /*
      * Toggle enabled/disabled state.
-     * 
+     *
      * The driver is not bothered if we are modifying an orphaned
      * breakpoint.
      */
@@ -588,7 +588,7 @@ bool KDebugger::canStart()
     return isReady() && !m_programActive;
 }
 
-bool KDebugger::isReady() const 
+bool KDebugger::isReady() const
 {
     return m_haveExecutable &&
 	m_d != 0 && m_d->canExecuteImmediately();
@@ -778,8 +778,8 @@ void KDebugger::saveProgramSettings()
     int i = 0;
     for (std::map<QString,QString>::iterator it = m_envVars.begin(); it != m_envVars.end(); ++it, ++i)
     {
-	varName.sprintf(Variable, i);
-	varValue.sprintf(Value, i);
+	varName.asprintf(Variable, i);
+	varValue.asprintf(Value, i);
 	eg.writeEntry(varName, it->first);
 	eg.writeEntry(varValue, it->second);
     }
@@ -793,7 +793,7 @@ void KDebugger::saveProgramSettings()
     KConfigGroup wg = m_programConfig->group(WatchGroup);
     int watchNum = 0;
     foreach (QString expr, m_watchVariables.exprList()) {
-	varName.sprintf(ExprFmt, watchNum++);
+	varName.asprintf(ExprFmt, watchNum++);
 	wg.writeEntry(varName, expr);
     }
 
@@ -830,8 +830,8 @@ void KDebugger::restoreProgramSettings()
     QString varName;
     QString varValue;
     for (int i = 0;; ++i) {
-	varName.sprintf(Variable, i);
-	varValue.sprintf(Value, i);
+	varName.asprintf(Variable, i);
+	varValue.asprintf(Value, i);
 	if (!eg.hasKey(varName)) {
 	    /* entry not present, assume that we've hit them all */
 	    break;
@@ -854,7 +854,7 @@ void KDebugger::restoreProgramSettings()
     KConfigGroup wg = m_programConfig->group(WatchGroup);
     m_watchVariables.clear();
     for (int i = 0;; ++i) {
-	varName.sprintf(ExprFmt, i);
+	varName.asprintf(ExprFmt, i);
 	if (!wg.hasKey(varName)) {
 	    /* entry not present, assume that we've hit them all */
 	    break;
@@ -918,7 +918,7 @@ void KDebugger::saveBreakpoints(KConfig* config)
     {
 	if (bp->type == Breakpoint::watchpoint)
 	    continue;			/* don't save watchpoints */
-	groupName.sprintf(BPGroup, i++);
+	groupName.asprintf(BPGroup, i++);
 
 	/* remove remmants */
 	config->deleteGroup(groupName);
@@ -951,7 +951,7 @@ void KDebugger::saveBreakpoints(KConfig* config)
     // delete remaining groups
     // we recognize that a group is present if there is an Enabled entry
     for (;; i++) {
-	groupName.sprintf(BPGroup, i);
+	groupName.asprintf(BPGroup, i);
 	if (!config->group(groupName).hasKey(Enabled)) {
 	    /* group not present, assume that we've hit them all */
 	    break;
@@ -968,7 +968,7 @@ void KDebugger::restoreBreakpoints(KConfig* config)
      * present.
      */
     for (int i = 0;; i++) {
-	groupName.sprintf(BPGroup, i);
+	groupName.asprintf(BPGroup, i);
 	KConfigGroup g = config->group(groupName);
 	if (!g.hasKey(Enabled)) {
 	    /* group not present, assume that we've hit them all */
@@ -1212,7 +1212,7 @@ void KDebugger::handleRunCommands(const char* output)
 	emit executableUpdated();
     }
 
-    /* 
+    /*
      * Try to set any orphaned breakpoints now.
      */
     for (BrkptIterator bp = m_brkpts.begin(); bp != m_brkpts.end(); ++bp)
@@ -1524,7 +1524,7 @@ void KDebugger::handleBacktrace(const char* output)
 		func = frm->var->m_name;
 	    else
 		func = frm->fileName + ":" + QString().setNum(frm->lineNo+1);
-        
+
  	    m_btWindow.addItem(func);
 	    TRACE("frame " + func + " (" + frm->fileName + ":" +
 		  QString().setNum(frm->lineNo+1) + ")");
@@ -1734,12 +1734,12 @@ void KDebugger::handlePrintStruct(CmdQueueItem* cmd, const char* output)
      * var->m_type->m_displayString[0] earlier). Each time we arrive here,
      * we append the printed result followed by the next
      * var->m_type->m_displayString to var->m_partialValue.
-     * 
+     *
      * If the expression we just evaluated was a guard expression, and it
      * resulted in an error, we must not evaluate the real expression, but
      * go on to the next index. (We must still add the question marks to
      * the value).
-     * 
+     *
      * Next, if this was the length expression, we still have not seen the
      * real expression, but the length of a QString.
      */
@@ -2224,7 +2224,7 @@ void KDebugger::slotValueEdited(VarTree* expr, const QString& text)
 	return;			       /* no text entered: ignore request */
 
     ExprWnd* wnd = static_cast<ExprWnd*>(expr->treeWidget());
-    TRACE(QString().sprintf("Changing %s to ",
+    TRACE(QString().asprintf("Changing %s to ",
 			    wnd->exprList().join(" ")) + text);
 
     // determine the lvalue to edit
