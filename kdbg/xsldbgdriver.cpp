@@ -50,6 +50,8 @@ static XsldbgCmdInfo cmds[] = {
     {DCtty, "tty %s\n", XsldbgCmdInfo::argString},
     {DCexecutable, "source %s\n", XsldbgCmdInfo::argString},    /* force a restart */
     {DCtargetremote, "print 'target remote %s'\n", XsldbgCmdInfo::argString},
+    {DCremoteexecfile, "print 'set remote exec-file %s'\n", XsldbgCmdInfo::argString },
+    {DCtargetextremote, "print 'target extended-remote %s'\n", XsldbgCmdInfo::argString },
     {DCcorefile, "data  %s\n", XsldbgCmdInfo::argString},       /* force a restart */
     {DCattach, "print 'attach %s'\n", XsldbgCmdInfo::argString},
     {DCinfolinemain, "print 'info main line'\n", XsldbgCmdInfo::argNone},

@@ -47,6 +47,8 @@ enum DbgCommand {
 	DCtty,
 	DCexecutable,
 	DCtargetremote,
+        DCremoteexecfile,
+	DCtargetextremote,
 	DCcorefile,
 	DCattach,
 	DCinfolinemain,

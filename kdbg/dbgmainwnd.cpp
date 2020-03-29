@@ -792,6 +792,13 @@ void DebuggerMainWnd::setRemoteDevice(const QString& remoteDevice)
     }
 }
 
+void DebuggerMainWnd::setRemoteExecfile(const QString& remoteExecfile)
+{
+    if (m_debugger != 0) {
+        m_debugger->setRemoteExecfile(remoteExecfile);
+    }
+}
+
 void DebuggerMainWnd::overrideProgramArguments(const QString& args)
 {
     assert(m_debugger != 0);
