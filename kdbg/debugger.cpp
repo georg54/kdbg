@@ -496,7 +496,7 @@ bool KDebugger::enableDisableBreakpoint(BrkptIterator bp)
 
     /*
      * Toggle enabled/disabled state.
-     * 
+     *
      * The driver is not bothered if we are modifying an orphaned
      * breakpoint.
      */
@@ -593,7 +593,7 @@ bool KDebugger::canStart()
     return isReady() && !m_programActive;
 }
 
-bool KDebugger::isReady() const 
+bool KDebugger::isReady() const
 {
     return m_haveExecutable &&
 	m_d != 0 && m_d->canExecuteImmediately();
@@ -1053,7 +1053,7 @@ void KDebugger::parse(CmdQueueItem* cmd, const char* output)
 		m_programActive = true;
 		m_programRunning = true;
 	    }
-	    else if (!m_remoteDevice.isEmpty())
+	    else if (!m_remoteDevice.isEmpty() && m_remoteExecfile.isEmpty())
 	    {
 		// handled elsewhere
 	    }
@@ -1219,7 +1219,7 @@ void KDebugger::handleRunCommands(const char* output)
 	emit executableUpdated();
     }
 
-    /* 
+    /*
      * Try to set any orphaned breakpoints now.
      */
     for (BrkptIterator bp = m_brkpts.begin(); bp != m_brkpts.end(); ++bp)
@@ -1531,7 +1531,7 @@ void KDebugger::handleBacktrace(const char* output)
 		func = frm->var->m_name;
 	    else
 		func = frm->fileName + ":" + QString().setNum(frm->lineNo+1);
-        
+
  	    m_btWindow.addItem(func);
 	    TRACE("frame " + func + " (" + frm->fileName + ":" +
 		  QString().setNum(frm->lineNo+1) + ")");
@@ -1741,12 +1741,12 @@ void KDebugger::handlePrintStruct(CmdQueueItem* cmd, const char* output)
      * var->m_type->m_displayString[0] earlier). Each time we arrive here,
      * we append the printed result followed by the next
      * var->m_type->m_displayString to var->m_partialValue.
-     * 
+     *
      * If the expression we just evaluated was a guard expression, and it
      * resulted in an error, we must not evaluate the real expression, but
      * go on to the next index. (We must still add the question marks to
      * the value).
-     * 
+     *
      * Next, if this was the length expression, we still have not seen the
      * real expression, but the length of a QString.
      */
