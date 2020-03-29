@@ -15,7 +15,7 @@
 #include <QContextMenuEvent>
 #include <stdlib.h>			/* strtoul */
 
-/** 
+/**
  * Register display modes
  */
 class RegisterDisplay {
@@ -45,7 +45,7 @@ public:
     RegisterDisplay(uint newMode) : mode(newMode) { }
 
     bool contains(uint pmode) const {
-	bool val=((mode&0xf0)==pmode)||((mode&0x0f)==pmode);    
+	bool val=((mode&0xf0)==pmode)||((mode&0x0f)==pmode);
 	return val;
     }
     uint bitsFlag() { return mode&0xf0; }
@@ -105,7 +105,7 @@ public:
 class GroupingViewItem : public ModeItem
 {
 public:
-    GroupingViewItem(RegisterView* parent, 
+    GroupingViewItem(RegisterView* parent,
 		     const QString& name, const QString& pattern,
 		     RegisterDisplay mode) :
 	ModeItem(parent, name), matcher(pattern), gmode(mode)
@@ -121,7 +121,7 @@ public:
 
     void setMode(RegisterDisplay mode) override
     {
-	gmode=mode; 
+	gmode=mode;
 	for(int i = 0; i < childCount(); i++)
 	{
 	    static_cast<ModeItem*>(child(i))->setMode(gmode);
@@ -199,7 +199,7 @@ static QString toBinary(QString hex)
 	"1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
     };
     QString result;
-    
+
     for (int i = 2; i < hex.length(); i++) {
 	int idx = hexCharToDigit(hex[i].toLatin1());
 	if (idx < 0) {
@@ -332,16 +332,16 @@ static QString toFloat(const QString& hex, char p)
     char fmt[8] = "%.*Lf";
     fmt[4] = p;
     char buf[50];
-    sprintf(buf, fmt, prec, extractNumber(hex));
+    snprintf(buf, sizeof(buf), fmt, prec, extractNumber(hex));
     QString cooked = QString::fromLatin1(buf);
     if (p=='e') {
-	prec+=7;    
+	prec+=7;
 	while (cooked.length()<prec) cooked=cooked.prepend(" ");
     }
     return cooked;
 }
 
-static QString convertSingle(const QString& raw, const RegisterDisplay mode) 
+static QString convertSingle(const QString& raw, const RegisterDisplay mode)
 {
     switch (mode.presentationFlag()) {
     case RegisterDisplay::binary:  return toBinary(raw);
@@ -363,7 +363,7 @@ QString convertRaw(const RegisterInfo reg, RegisterDisplay mode)
     if (RegisterDisplay::nada!=mode.presentationFlag() &&
         reg.rawValue.length() > 2 && reg.rawValue[0] == '0' && reg.rawValue[1] == 'x')
     {
-        if ("uint128"==reg.type) totalNibles=32; 
+        if ("uint128"==reg.type) totalNibles=32;
         else if ("uint64"==reg.type) totalNibles=16;
         else if (reg.type.isEmpty()) totalNibles=nibles;
         else {
@@ -378,7 +378,7 @@ QString convertRaw(const RegisterInfo reg, RegisterDisplay mode)
 	QString separator=",";	// locale-specific?
         for (int nib=totalNibles-nibles; nib>=0; nib-=nibles) {
             QString qstr=convertSingle(raw.mid(nib, nibles).prepend("0x"), mode);
-            
+
             if (nib==int(totalNibles-nibles)) cooked=qstr+cooked;
             else cooked=qstr+separator+cooked;
         }
@@ -433,7 +433,7 @@ RegisterView::RegisterView(QWidget* parent) :
 	}
     }
     connect(m_modemenu, SIGNAL(triggered(QAction*)), SLOT(slotModeChange(QAction*)));
-    
+
     new GroupingViewItem(this, i18n("GP and others"), "^$",
 			 RegisterDisplay::nada);
     new GroupingViewItem(this, i18n("Flags"),
@@ -457,7 +457,7 @@ RegisterView::RegisterView(QWidget* parent) :
 
     updateGroupVisibility();
     setRootIsDecorated(true);
-    
+
     resize(200,300);
 }
 
@@ -568,14 +568,14 @@ void RegisterView::updateRegisters(const std::list<RegisterInfo>& regs)
     updateGroupVisibility();
     setUpdatesEnabled(true);
 }
-  
+
 
 void RegisterView::contextMenuEvent(QContextMenuEvent* event)
 {
     QTreeWidgetItem *item = itemAt(event->pos());
 
     if (item) {
-        RegisterDisplay mode=static_cast<ModeItem*>(item)->mode();        
+        RegisterDisplay mode=static_cast<ModeItem*>(item)->mode();
 	int i = 0;
 	foreach(QAction* action, m_modemenu->actions())
 	{
@@ -586,7 +586,7 @@ void RegisterView::contextMenuEvent(QContextMenuEvent* event)
 	m_modemenu->popup(event->globalPos());
 
 	event->accept();
-    }    
+    }
 }
 
 void RegisterView::slotModeChange(QAction* action)
