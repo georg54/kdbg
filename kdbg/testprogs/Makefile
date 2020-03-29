@@ -39,7 +39,7 @@ longdouble: longdouble.c
 	gcc -o $@ $(CXXFLAGS) $^
 
 maths: maths.cpp
-	g++ -static -o $@ $(CXXFLAGS) $^
+	g++ -o $@ $(CXXFLAGS) $^
 
 multibrkpt: multibrkpt.cpp
 	g++ -o $@ $(CXXFLAGS) $^
