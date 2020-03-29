@@ -66,6 +66,7 @@ int main(int argc, char** argv)
     };
     opt("t", i18n("transcript of conversation with the debugger"), "file");
     opt("r", i18n("remote debugging via <device>"), "device");
+    opt("e", i18n("extended remote debugging of <remote-program>"), "remote-program");
     opt("l", i18n("specify language: C, XSLT"), "language");
     opt0("x", i18n("use language XSLT (deprecated)"));
     opt("a", i18n("specify arguments of debugged executable"), "args");
@@ -99,8 +100,13 @@ int main(int argc, char** argv)
 
     QString transcript = parser.value("t");
     QString remote = parser.value("r");
-    if (!remote.isEmpty())
+    if (!remote.isEmpty()) {
 	debugger->setRemoteDevice(remote);
+
+        QString execfile = parser.value("e");
+        if (!execfile.isEmpty())
+            debugger->setRemoteExecfile(execfile);
+    }
 
     QString lang = parser.value("l");
 

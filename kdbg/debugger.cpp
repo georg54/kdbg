@@ -180,12 +180,17 @@ bool KDebugger::debugProgram(const QString& name,
 
     // set remote target
     if (!m_remoteDevice.isEmpty()) {
-	m_d->executeCmd(DCtargetremote, m_remoteDevice);
-	m_d->queueCmd(DCbt);
-	m_d->queueCmd(DCinfothreads);
-	m_d->queueCmdAgain(DCframe, 0);
-	m_programActive = true;
-	m_haveExecutable = true;
+        if (m_remoteExecfile.isEmpty()) {
+            m_d->executeCmd(DCtargetremote, m_remoteDevice);
+            m_d->queueCmd(DCbt);
+            m_d->queueCmd(DCinfothreads);
+            m_d->queueCmdAgain(DCframe, 0);
+            m_programActive = true;
+            m_haveExecutable = true;
+        } else {
+            m_d->executeCmd(DCremoteexecfile, m_remoteExecfile);
+            m_d->executeCmd(DCtargetextremote, m_remoteDevice);
+        }
     }
 
     // create a type table
@@ -1012,6 +1017,8 @@ void KDebugger::parse(CmdQueueItem* cmd, const char* output)
 
     switch (cmd->m_cmd) {
     case DCtargetremote:
+    case DCremoteexecfile:
+    case DCtargetextremote:
 	// the output (if any) is uninteresting
     case DCsetargs:
     case DCtty:

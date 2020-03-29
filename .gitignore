@@ -5,3 +5,4 @@ Makefile
 kdbg/kdbg_autogen/*
 prefix.sh
 remove
+install_manifest.txt

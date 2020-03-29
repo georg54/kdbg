@@ -68,6 +68,8 @@ static GdbCmdInfo cmds[] = {
     { DCtty, "tty %s\n", GdbCmdInfo::argString },
     { DCexecutable, "file \"%s\"\n", GdbCmdInfo::argString },
     { DCtargetremote, "target remote %s\n", GdbCmdInfo::argString },
+    { DCremoteexecfile, "set remote exec-file %s\n", GdbCmdInfo::argString },
+    { DCtargetextremote, "target extended-remote %s\n", GdbCmdInfo::argString },
 #ifdef __FreeBSD__
     { DCcorefile, "target FreeBSD-core %s\n", GdbCmdInfo::argString },
 #else

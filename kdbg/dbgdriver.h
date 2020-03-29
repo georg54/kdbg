@@ -47,6 +47,8 @@ enum DbgCommand {
 	DCtty,
 	DCexecutable,
 	DCtargetremote,
+        DCremoteexecfile,
+	DCtargetextremote,
 	DCcorefile,
 	DCattach,
 	DCinfolinemain,
@@ -189,7 +191,7 @@ struct Breakpoint
 {
     int id;				/* gdb's number */
     enum Type {
-	breakpoint, watchpoint 
+	breakpoint, watchpoint
     } type;
     bool temporary;
     bool enabled;
@@ -300,7 +302,7 @@ public:
 
 protected:
     QString m_runCmd;
-    
+
     enum DebuggerState {
 	DSidle,				/* gdb waits for input */
 	DSinterrupted,			/* a command was interrupted */
@@ -616,7 +618,7 @@ protected slots:
     virtual void slotReceiveOutput();
     virtual void slotCommandRead();
     virtual void slotExited();
-    
+
 signals:
     /**
      * This signal is emitted when the output of a command has been fully
@@ -627,10 +629,10 @@ signals:
     /**
      * This signal is emitted when the debugger recognizes that a specific
      * location in a file ought to be displayed.
-     * 
+     *
      * Gdb's --fullname option supports this for the step, next, frame, and
      * run commands (and possibly others).
-     * 
+     *
      * @param file specifies the file; this is not necessarily a full path
      * name, and if it is relative, you won't know relative to what, you
      * can only guess.
