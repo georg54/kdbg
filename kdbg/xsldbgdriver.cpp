@@ -368,9 +368,7 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, QString strArg)
 	m_xslFile = strArg;
     }
 
-    QString cmdString;
-    cmdString.asprintf(cmds[cmd].fmt, strArg.toUtf8().constData());
-    return cmdString;
+    return QString::asprintf(cmds[cmd].fmt, strArg.toUtf8().constData());
 }
 
 QString
@@ -379,9 +377,7 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, int intArg)
     assert(cmd >= 0 && cmd < NUM_CMDS);
     assert(cmds[cmd].argsNeeded == XsldbgCmdInfo::argNum);
 
-    QString cmdString;
-    cmdString.asprintf(cmds[cmd].fmt, intArg);
-    return cmdString;
+    return QString::asprintf(cmds[cmd].fmt, intArg);
 }
 
 QString
@@ -459,9 +455,7 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, QString strArg, int intArg)
                 }
                 break;
         }
-        QString spec;
-
-        spec.asprintf("/%d%c%c", count, sizeSpec, formatSpec);
+        QString spec = QString::asprintf("/%d%c%c", count, sizeSpec, formatSpec);
 
         return makeCmdString(DCexamine, spec, strArg);
     }
@@ -476,9 +470,9 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, QString strArg, int intArg)
             // must split off file name part
             strArg = QFileInfo(strArg).fileName();
         }
-        cmdString.asprintf(cmds[cmd].fmt, strArg.toUtf8().constData(), intArg);
+        cmdString = QString::asprintf(cmds[cmd].fmt, strArg.toUtf8().constData(), intArg);
     } else {
-        cmdString.asprintf(cmds[cmd].fmt, intArg, strArg.toUtf8().constData());
+        cmdString = QString::asprintf(cmds[cmd].fmt, intArg, strArg.toUtf8().constData());
     }
     return cmdString;
 }
@@ -493,11 +487,9 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, QString strArg1,
     normalizeStringArg(strArg1);
     normalizeStringArg(strArg2);
 
-    QString cmdString;
-    cmdString.asprintf(cmds[cmd].fmt,
-		      strArg1.toUtf8().constData(),
-		      strArg2.toUtf8().constData());
-    return cmdString;
+    return QString::asprintf(cmds[cmd].fmt,
+		             strArg1.toUtf8().constData(),
+		             strArg2.toUtf8().constData());
 }
 
 QString
@@ -506,9 +498,7 @@ XsldbgDriver::makeCmdString(DbgCommand cmd, int intArg1, int intArg2)
     assert(cmd >= 0 && cmd < NUM_CMDS);
     assert(cmds[cmd].argsNeeded == XsldbgCmdInfo::argNum2);
 
-    QString cmdString;
-    cmdString.asprintf(cmds[cmd].fmt, intArg1, intArg2);
-    return cmdString;
+    return QString::asprintf(cmds[cmd].fmt, intArg1, intArg2);
 }
 
 QString
