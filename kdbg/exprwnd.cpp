@@ -729,7 +729,7 @@ void ExprWnd::editValue(VarTree* item, const QString& text)
      * less than half of it if the text is shorter).
      */
     QFontMetrics metr(m_edit->font());
-    int wMin = metr.width("88888");
+    int wMin = metr.horizontalAdvance("88888");
     if (w < wMin)
 	w = wMin;
     int wThis = viewport()->width();
@@ -840,7 +840,7 @@ void ValueEdit::focusOutEvent(QFocusEvent* ev)
 }
 
 void ValueEdit::slotSelectionChanged()
-{   
+{
     TRACE("ValueEdit::slotSelectionChanged");
     terminate(false);
 }

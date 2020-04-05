@@ -773,8 +773,8 @@ void SourceWindow::setTabWidth(int numChars)
 	numChars = 8;
     QFontMetrics fm(document()->defaultFont());
     QString s;
-    int w = fm.width(s.fill('x', numChars));
-    setTabStopWidth(w);
+    int w = fm.horizontalAdvance(s.fill('x', numChars));
+    setTabStopDistance(w);
 }
 
 QColor SourceWindow::lineSelectionColor() const
