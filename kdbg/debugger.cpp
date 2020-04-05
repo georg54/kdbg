@@ -820,7 +820,8 @@ void KDebugger::restoreProgramSettings()
     // m_ttyLevel has been read in already
     QString pgmArgs = gg.readEntry(ProgramArgs);
     QString pgmWd = gg.readEntry(WorkingDirectory);
-    QSet<QString> boolOptions = QSet<QString>::fromList(gg.readEntry(OptionsSelected, QStringList()));
+    QList<QString> const &  readEntry = gg.readEntry(OptionsSelected, QStringList());
+    QSet<QString> boolOptions (readEntry.begin(), readEntry.end());
     m_boolOptions.clear();
 
     // read environment variables
