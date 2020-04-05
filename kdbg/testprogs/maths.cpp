@@ -27,4 +27,5 @@ int main(int argc, char** argv)
 		a, b, sine);
 
 	longdouble(17.0);
+	return 0;
 }
