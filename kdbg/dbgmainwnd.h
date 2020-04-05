@@ -52,6 +52,7 @@ public:
     // the following are needed to handle program arguments
     void setCoreFile(const QString& corefile);
     void setRemoteDevice(const QString &remoteDevice);
+    void setRemoteExecfile(const QString &remoteExecfile);
     void overrideProgramArguments(const QString& args);
 
 protected:

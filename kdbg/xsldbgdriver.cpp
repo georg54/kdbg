@@ -50,6 +50,8 @@ static XsldbgCmdInfo cmds[] = {
     {DCtty, "tty %s\n", XsldbgCmdInfo::argString},
     {DCexecutable, "source %s\n", XsldbgCmdInfo::argString},    /* force a restart */
     {DCtargetremote, "print 'target remote %s'\n", XsldbgCmdInfo::argString},
+    {DCremoteexecfile, "print 'set remote exec-file %s'\n", XsldbgCmdInfo::argString },
+    {DCtargetextremote, "print 'target extended-remote %s'\n", XsldbgCmdInfo::argString },
     {DCcorefile, "data  %s\n", XsldbgCmdInfo::argString},       /* force a restart */
     {DCattach, "print 'attach %s'\n", XsldbgCmdInfo::argString},
     {DCinfolinemain, "print 'info main line'\n", XsldbgCmdInfo::argNone},
@@ -248,8 +250,8 @@ XsldbgDriver::commandFinished(CmdQueueItem * cmd)
 	  if (!::isErrorExpr(m_output.constData()))
             parseMarker();
 	  else{
-	    // This only shows an error for DCinfolocals 
-	    //  need to update KDebugger::handleRunCommand ? 
+	    // This only shows an error for DCinfolocals
+	    //  need to update KDebugger::handleRunCommand ?
 	    KMessageBox::sorry(0L, m_output);
 	  }
 	}
@@ -551,17 +553,17 @@ isErrorExpr(const char *output)
     bool result = false;
 #define   ERROR_WORD_COUNT 6
     static const char *errorWords[ERROR_WORD_COUNT] = {
-      "Error:", 
-      "error:", // libxslt error 
-      "Unknown command",  
+      "Error:",
+      "error:", // libxslt error
+      "Unknown command",
       "Warning:",
       "warning:", // libxslt warning
-      "Information:" // xsldbg information	
+      "Information:" // xsldbg information
     };
     static int errorWordLength[ERROR_WORD_COUNT] = {
       6,  /* Error */
       6,  /* rror */
-      15, /* Unknown command*/ 
+      15, /* Unknown command*/
       8,  /* Warning */
       8,  /* warning */
       12  /* Information */

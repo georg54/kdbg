@@ -168,9 +168,14 @@ public:
     void setRemoteDevice(const QString& remoteDevice) { m_remoteDevice = remoteDevice; }
 
     /**
+     * Setup extended remote target executable
+     */
+    void setRemoteExecfile(const QString& remoteExecfile) { m_remoteExecfile = remoteExecfile; }
+
+    /**
      * Run the debuggee until the specified line in the specified file is
      * reached.
-     * 
+     *
      * @return false if the command was not executed, e.g. because the
      * debuggee is running at the moment.
      */
@@ -204,7 +209,7 @@ public:
 
     /**
      * Set a breakpoint.
-     * 
+     *
      * @param bp Describes the breakpoint.
      * @param queueOnly If false, the breakpoint is set using a high-priority command.
      */
@@ -212,7 +217,7 @@ public:
 
     /**
      * Enable or disable a breakpoint at the specified location.
-     * 
+     *
      * @param fileName The source file in which the breakpoint is.
      * @param lineNo The zero-based line number.
      * @param address The exact address of the breakpoint.
@@ -360,7 +365,7 @@ protected:
     bool startDriver();
     void stopDriver();
     void writeCommand();
-    
+
     std::list<QString> m_watchEvalExpr;	/* exprs to evaluate for watch window */
     std::list<Breakpoint> m_brkpts;
     QString m_memoryExpression;		/* memory location to watch */
@@ -428,6 +433,7 @@ protected:
     QString m_attachedPid;		/* user input of attaching to pid */
     QString m_programArgs;
     QString m_remoteDevice;
+    QString m_remoteExecfile;
     QString m_programWD;		/* working directory of gdb */
     std::map<QString,QString> m_envVars;	/* environment variables set by user */
     QSet<QString> m_boolOptions;	/* boolean options */
@@ -469,7 +475,7 @@ signals:
      * This signal is emitted whenever a part of the debugger needs to
      * highlight the specfied source code line (e.g. when the program
      * stops).
-     * 
+     *
      * @param file specifies the file; this is not necessarily a full path
      * name, and if it is relative, you won't know relative to what, you
      * can only guess.
